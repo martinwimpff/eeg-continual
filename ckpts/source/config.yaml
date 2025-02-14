@@ -1,0 +1,28 @@
+log_model: true
+max_epochs: 100
+model_kwargs:
+  ch_dim: 16
+  dropout: 0.5
+  dropout_inp: 0.5
+  lr: 0.001
+  n_channels: 24
+  n_temporal_filters: 40
+  optimizer: adam
+  padding_mode: zeros
+  pool_length_inp: 5
+  scheduler: true
+  spatial_expansion: 1
+  temp_filter_length: 15
+  temp_filter_length_inp: 25
+  warmup_epochs: 20
+  weight_decay: 0.0
+n_subjects: 1
+preprocessing:
+  alignment: euclidean
+  batch_size: 128
+  data_mode: first
+  h_freq: 30
+  l_freq: 8
+  min_trial_length: 1.0
+  paradigm: LR
+seed: 0
