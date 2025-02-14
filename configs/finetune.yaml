@@ -1,0 +1,12 @@
+n_subjects: 61
+# n_folds: 1
+max_epochs: 50
+log_model: False
+data_mode: "joint"  # ["exemplar-free", "joint"]
+adaptation_mode: "sequential"  # ["independent", "sequential"]
+finetuner_kwargs:
+  lr: 0.001
+  weight_decay: 0.0
+  optimizer: "adam"
+  scheduler: True
+  warmup_epochs: 0
