@@ -13,7 +13,7 @@ from eeg_continual.utils.metrics import calculate_accuracies
 from eeg_continual.utils.print_results import print_results
 from eeg_continual.utils.seed import seed_everything
 
-CONFIG_DIR = Path(__file__).resolve().parents[1].joinpath("configs")
+CONFIG_DIR = Path(__file__).resolve().parents[2].joinpath("configs")
 CKPT_DIR = Path(__file__).resolve().parents[2].joinpath("ckpts")
 DEFAULT_CONFIG = "finetune.yaml"
 
