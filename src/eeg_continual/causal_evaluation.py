@@ -33,7 +33,7 @@ def causal_evaluation(config: dict):
     n_classes = 2
     datamodule = Stieger21TTADataModule(preprocessing_dict)
     results_df = pd.DataFrame(columns=[
-        "subject_id", "session_id", "test_acc"])
+        "subject_id", "session_id", "test_acc", "test_acc_ww"])
     for subject_id in range(1, n_subjects + 1):
         # setup datamodule for target subject
         datamodule.setup_subject(subject_id)

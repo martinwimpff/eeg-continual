@@ -45,7 +45,7 @@ class RobustBN(nn.Module):
         self.bias = deepcopy(bn_layer.bias)
         self.eps = bn_layer.eps
 
-    def forward(self, x):
+    def forward(self, x, trial_lengths=None):
         if self.training:
             b_var, b_mean = torch.var_mean(x, dim=[0, 2, 3], unbiased=False, keepdim=False)  # (C,)
             mean = (1 - self.momentum) * self.source_mean + self.momentum * b_mean

@@ -37,6 +37,13 @@ class StiegerBaseDataset(ABC):
     def setup_fold(self, fold_idx: int = 0):
         raise NotImplementedError
 
+    def _clean_data_dict(self):
+        # delete old data from data dict to save memory
+        if f"subject_{self.subject_id}" in self.data_dict.keys():
+            keys = list(self.data_dict[f"subject_{self.subject_id}"].keys())
+            for key in keys:
+                del self.data_dict[f"subject_{self.subject_id}"][key]
+
     def _get_data(self, subject_ids: list[int], session_ids: list[int]):
         x, targets, lengths = [], [], []
         for subject_id in subject_ids:
@@ -76,16 +83,9 @@ class Stieger21WithinDataset(StiegerBaseDataset):
 
         assert self.data_mode in ["exemplar-free", "joint"]
 
-    def _clean_data_dict(self):
-        # delete old data from data dict to save memory
-        if f"subject_{self.subject_id}" in self.data_dict.keys():
-            keys = list(self.data_dict[f"subject_{self.subject_id}"].keys())
-            for key in keys:
-                del self.data_dict[f"subject_{self.subject_id}"][key]
-
     def setup_subject(self, subject_id: int):
         self._clean_data_dict()  # delete all sessions of prev. subject
-        super(Stieger21WithinDataset, self).setup_subject(subject_id)
+        self.subject_id = subject_id
         self.n_sessions = get_n_sessions(self.subject_id)
         self.max_n_folds = self.n_sessions - 1
 

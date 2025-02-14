@@ -7,7 +7,6 @@ class TTAMethod(nn.Module):
         super(TTAMethod, self).__init__()
         self.model = model
         self.config = config
-        self.device = self.model.device
 
         self.configure_model()
 
