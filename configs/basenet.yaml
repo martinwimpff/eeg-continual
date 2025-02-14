@@ -1,0 +1,30 @@
+n_subjects: 61
+seed: 0
+max_epochs: 100
+log_model: False
+
+preprocessing:
+  batch_size: 128
+  l_freq: 8
+  h_freq: 30
+  min_trial_length: 1.0
+  paradigm: "LR"  # ["LR", "UD"]
+  data_mode: "first"
+  alignment: "euclidean"
+
+model_kwargs:
+  n_channels: 24
+  n_temporal_filters: 40
+  temp_filter_length_inp: 25
+  spatial_expansion: 1
+  pool_length_inp: 5
+  dropout_inp: 0.5
+  ch_dim: 16
+  temp_filter_length: 15
+  dropout: 0.5
+  padding_mode: "zeros"
+  lr: 0.001
+  weight_decay: 0.0
+  optimizer: "adam"
+  scheduler: True
+  warmup_epochs: 20
