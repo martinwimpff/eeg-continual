@@ -69,7 +69,7 @@ class Stieger21WithinDataset(StiegerBaseDataset):
 
     def __init__(self, min_trial_length: float = 1.0, l_freq: float = None,
                  h_freq: float = None, paradigm: str = "LR", data_mode: str = "joint",
-                 alignment: str = False):
+                 alignment: str = False, **kwargs):
         super(Stieger21WithinDataset, self).__init__(
             min_trial_length=min_trial_length, l_freq=l_freq, h_freq=h_freq,
             paradigm=paradigm, data_mode=data_mode, alignment=alignment)
@@ -114,7 +114,7 @@ class Stieger21WithinDataset(StiegerBaseDataset):
 class Stieger21LOSODataset(StiegerBaseDataset):
     def __init__(self, min_trial_length: float = 1.0, l_freq: float = None,
                  h_freq: float = None, paradigm: str = "LR", data_mode: str = "first",
-                 alignment: str = False):
+                 alignment: str = False, **kwargs):
         super(Stieger21LOSODataset, self).__init__(
             min_trial_length=min_trial_length, l_freq=l_freq, h_freq=h_freq,
             paradigm=paradigm, data_mode=data_mode, alignment=alignment)
@@ -144,7 +144,7 @@ class Stieger21LOSODataset(StiegerBaseDataset):
 class Stieger21TTADataset(StiegerBaseDataset):
     def __init__(self, min_trial_length: float = 1.0, l_freq: float = None,
                  h_freq: float = None, paradigm: str = "LR", data_mode: str = None,
-                 alignment: str = False):
+                 alignment: str = False, **kwargs):
         assert not alignment
         super(Stieger21TTADataset, self).__init__(
             min_trial_length=min_trial_length, l_freq=l_freq, h_freq=h_freq,

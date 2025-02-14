@@ -16,7 +16,6 @@ class Stieger21BaseDataModule(pl.LightningDataModule):
         super(Stieger21BaseDataModule, self).__init__()
         self.batch_size = preprocessing_dict.get("batch_size", NotImplementedError)
         self.preprocessing_dict = preprocessing_dict
-        self.dataset = Stieger21WithinDataset(**self.preprocessing_dict)
 
     def setup_subject(self, subject_id: int):
         self.dataset.setup_subject(subject_id)
