@@ -19,14 +19,13 @@ DEFAULT_CONFIG = "basenet.yaml"
 
 def train_and_test(config: dict):
     model_cls = BaseNet
-    datamodule_cls = Stieger21LOSODataModule
     n_subjects = config.get("n_subjects", 1)
     n_classes = 2
 
     results_df = pd.DataFrame(columns=[
         "subject_id", "session_id", "test_acc", "test_acc_ww"])
 
-    datamodule = datamodule_cls(config.get("preprocessing"))
+    datamodule = Stieger21LOSODataModule(config.get("preprocessing"))
     for subject_id in range(1, n_subjects + 1):
         seed_everything(config.get("seed", 0))
         datamodule.setup_subject(subject_id)
@@ -46,7 +45,7 @@ def train_and_test(config: dict):
             max_epochs=config.get("max_epochs"), n_classes=n_classes)
         trainer.fit(model, datamodule=datamodule)
 
-        # save checkoint and config
+        # save checkpoint and config
         if config.get("log_model", False):
             trainer.save_checkpoint(CKPT_DIR.joinpath("source", f"subject_{subject_id:02}.ckpt"))
             if subject_id == 1:
