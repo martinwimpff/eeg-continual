@@ -13,6 +13,7 @@ from eeg_continual.utils.print_results import print_results
 from eeg_continual.utils.seed import seed_everything
 
 CONFIG_DIR = Path(__file__).resolve().parents[2].joinpath("configs")
+CKPT_DIR = Path(__file__).resolve().parents[2].joinpath("ckpts")
 DEFAULT_CONFIG = "basenet.yaml"
 
 
@@ -23,7 +24,7 @@ def train_and_test(config: dict):
     n_classes = 2
 
     results_df = pd.DataFrame(columns=[
-        "subject_id", "test_acc", "test_acc_ww"])
+        "subject_id", "session_id", "test_acc", "test_acc_ww"])
 
     datamodule = datamodule_cls(config.get("preprocessing"))
     for subject_id in range(1, n_subjects + 1):
@@ -36,7 +37,7 @@ def train_and_test(config: dict):
             num_sanity_val_steps=0,
             accelerator="auto",
             strategy="auto",
-            enable_checkpointing=config.get("log_model", False)
+            enable_checkpointing=False
         )
 
         # train model
@@ -44,6 +45,14 @@ def train_and_test(config: dict):
             **config.get("model_kwargs"),
             max_epochs=config.get("max_epochs"), n_classes=n_classes)
         trainer.fit(model, datamodule=datamodule)
+
+        # save checkoint and config
+        if config.get("log_model", False):
+            trainer.save_checkpoint(CKPT_DIR.joinpath("source", f"subject_{subject_id:02}.ckpt"))
+            if subject_id == 1:
+                with open(CKPT_DIR.joinpath("source", "config.yaml"), 'w') as yaml_file:
+                    yaml.dump(config, yaml_file, default_flow_style=False)
+
 
         # get predictions and true labels
         y_pred = torch.cat(trainer.predict(model, datamodule.predict_dataloader()))
@@ -54,15 +63,15 @@ def train_and_test(config: dict):
         valid_windows_cumsum = datamodule.predict_dataloader().dataset.valid_windows_cumsum
 
         # calculate metrics
-        trial_wise_acc, window_wise_acc, per_window = calculate_accuracies(
+        trial_wise_acc, window_wise_acc = calculate_accuracies(
             y_pred, y_test, n_valid_windows_per_trial, valid_windows_cumsum,
             n_classes, datamodule.dataset.max_windows_per_trial
         )
 
         # write results to dataframe
-        results_df.loc[len(results_df)] = [subject_id, trial_wise_acc, window_wise_acc]
+        results_df.loc[len(results_df)] = [subject_id, 1, trial_wise_acc, window_wise_acc]
 
-        print_results(results_df)
+    print_results(results_df)
 
 
 if __name__ == "__main__":
